@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shimmer: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: radial-gradient(circle at 50% 10%, #1e293b, #0f172a, #020617);
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.cursive {
+    font-family: 'Dancing Script', cursive;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    /* Slightly more opaque for readability */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+/* Snow effect */
+canvas#snowCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Card Animation */
+.card-container {
+    perspective: 1500px;
+    z-index: 10;
+}
+
+.card {
+    width: 360px;
+    height: 520px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-10px) rotateX(2deg);
+}
+
+.card.open {
+    transform: rotateY(-180deg) translateX(-50px);
+    /* Adjust for nicer open state */
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    overflow: hidden;
+    transition: z-index 0s 0.6s;
+    /* Delay z-index swap */
+}
+
+/* Interaction Logic */
+.card-front {
+    z-index: 2;
+    pointer-events: auto;
+}
+
+.card-back {
+    z-index: 1;
+    touch-action: pan-y;
+    /* Allow scrolling on mobile */
+    pointer-events: none;
+    /* Disable when closed */
+}
+
+.card.open .card-front {
+    pointer-events: none;
+    z-index: 1;
+}
+
+.card.open .card-back {
+    pointer-events: auto;
+    z-index: 2;
+}
+
+.card-front {
+    background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 0 40px rgba(185, 28, 28, 0.05);
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Decorative Elements */
+.ribbon {
+    position: absolute;
+    background: linear-gradient(to bottom, #dc2626, #b91c1c);
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
+}
+
+.ribbon-v {
+    width: 60px;
+    height: 100%;
+    top: 0;
+    left: 40%;
+    /* Offset slightly */
+}
+
+.ribbon-h {
+    width: 100%;
+    height: 40px;
+    top: 30%;
+}
+
+.shiny-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    padding: 2px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Floating Animation */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(2deg);
+    }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Button Styles */
+.btn-modern {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: white;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none;
+    box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.5);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -5px rgba(220, 38, 38, 0.6);
+}
+
+.btn-modern::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: 0.5s;
+}
+
+.btn-modern:hover::after {
+    left: 100%;
+}
+
+/* Overlay & Modal */
+.overlay {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Sparkles */
+.sparkle {
+    position: absolute;
+    pointer-events: none;
+    background: radial-gradient(circle, #fff, transparent);
+    border-radius: 50%;
+    animation: sparkleAnim 1s ease-out forwards;
+}
+
+@keyframes sparkleAnim {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.animate-spin-slow {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Christmas Lights */
+.light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: -5px;
+    box-shadow: 0 5px 20px 2px rgba(255, 255, 255, 0.5);
+    animation: light-glow 1s ease-in-out infinite alternate;
+    position: relative;
+}
+
+.light::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 8px;
+    background: #444;
+}
+
+@keyframes light-glow {
+    from {
+        opacity: 0.5;
+        transform: scale(0.9);
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.1);
+        box-shadow: 0 5px 25px rgba(255, 255, 255, 0.8);
+    }
+}
+
+.light:nth-child(2n) {
+    animation-duration: 1.2s;
+    animation-delay: 0.3s;
+}
+
+.light:nth-child(3n) {
+    animation-duration: 1.5s;
+    animation-delay: 0.6s;
+}
+
+.light:nth-child(4n) {
+    animation-duration: 1.8s;
+    animation-delay: 0.9s;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(220, 38, 38, 0.5);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(220, 38, 38, 0.8);
+}

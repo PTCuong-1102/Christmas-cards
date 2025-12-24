@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas for Vân Thùy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        red: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Christmas Lights -->
+    <div
+        class="lights-container fixed top-0 left-0 w-full h-8 z-20 pointer-events-none flex justify-around overflow-hidden">
+        <div class="light bg-red-500"></div>
+        <div class="light bg-yellow-400"></div>
+        <div class="light bg-blue-500"></div>
+        <div class="light bg-green-500"></div>
+        <div class="light bg-red-500"></div>
+        <div class="light bg-yellow-400"></div>
+        <div class="light bg-blue-500"></div>
+        <div class="light bg-green-500"></div>
+        <div class="light bg-red-500"></div>
+        <div class="light bg-yellow-400"></div>
+        <div class="light bg-blue-500"></div>
+        <div class="light bg-green-500"></div>
+        <div class="light bg-red-500"></div>
+        <div class="light bg-yellow-400"></div>
+        <div class="light bg-blue-500"></div>
+        <div class="light bg-green-500"></div>
+        <div class="light bg-red-500"></div>
+        <div class="light bg-yellow-400"></div>
+        <div class="light bg-blue-500"></div>
+        <div class="light bg-green-500"></div>
+    </div>
+
+    <div class="card-container">
+        <div id="mainCard" class="card" onclick="toggleCard()">
+            <!-- Mặt trước thiệp -->
+            <div class="card-front">
+                <div class="shiny-border"></div>
+                <div class="ribbon ribbon-h"></div>
+                <div class="ribbon ribbon-v"></div>
+
+                <div
+                    class="relative z-10 glass-card p-8 rounded-3xl w-full h-full flex flex-col justify-center items-center">
+                    <div
+                        class="tree-icon floating text-6xl mb-4 p-4 bg-white/30 rounded-full shadow-lg backdrop-blur-sm">
+                        🎄</div>
+                    <h1 class="text-4xl cursive text-red-700 mb-2 drop-shadow-md">Giáng Sinh Ấm Áp</h1>
+                    <p class="text-gray-500 font-medium tracking-wide text-sm mb-4">Dành tặng nàng của anh</p>
+
+                    <div class="relative py-2 px-6">
+                        <div class="absolute inset-0 bg-red-100/50 skew-x-12 rounded-lg"></div>
+                        <p class="relative text-2xl font-bold text-red-800 uppercase tracking-widest z-10">
+                            Vân Thùy
+                        </p>
+                    </div>
+
+                    <div
+                        class="mt-auto text-xs text-red-500 animate-pulse tracking-widest uppercase font-semibold bg-white/50 px-3 py-1 rounded-full">
+                        ✨ Chạm để mở quà ✨
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mặt sau thiệp -->
+            <div class="card-back">
+                <div class="shiny-border"></div>
+                <div class="w-full h-full glass-card rounded-3xl flex flex-col items-center p-6 overflow-y-auto">
+                    <div class="mb-4 relative group">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-red-600 to-green-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200">
+                        </div>
+                        <img src="./image/image.webp" alt="Avatar Vân Thùy"
+                            class="relative w-28 h-28 rounded-full border-4 border-white shadow-xl object-cover bg-red-50">
+                        <span class="absolute bottom-0 right-0 text-2xl filter drop-shadow-md floating">💝</span>
+                    </div>
+
+                    <h2 class="text-2xl cursive text-green-800 mb-2 drop-shadow-sm">Merry Christmas!</h2>
+                    <div
+                        class="h-1 w-16 bg-gradient-to-r from-transparent via-green-400 to-transparent mb-4 rounded-full">
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed mb-6 italic text-sm px-2 font-medium">
+                        "Giữa hàng triệu ngôi sao, anh vẫn luôn thấy <strong class="text-red-600">nàng</strong> là người
+                        rạng rỡ nhất.
+                        Chúc <strong class="text-red-600">bé Thùy</strong> mùa Giáng Sinh hạnh phúc!"
+                    </p>
+
+                    <button onclick="showSurprise(event)"
+                        class="btn-modern mt-auto mb-2 text-sm uppercase tracking-wide relative z-50 hover:scale-105 active:scale-95 cursor-pointer transform transition-transform duration-200">
+                        Bí Mật Của Anh 🎁
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thông điệp bí mật -->
+    <div class="overlay fixed inset-0 z-50 hidden" onclick="closeSurprise()"></div>
+    <div id="surpriseBox"
+        class="modal-content fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] hidden p-6 rounded-3xl w-[90%] max-w-lg text-center overflow-hidden">
+        <button onclick="closeSurprise()"
+            class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors text-xl z-20">✕</button>
+
+        <!-- Carousel -->
+        <div class="relative w-full h-64 mb-6 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="carousel-track h-full transition-transform duration-500 ease-out flex">
+                <!-- Slide 1 -->
+                <div class="w-full flex-shrink-0 h-full relative">
+                    <img src="https://images.unsplash.com/photo-1543589923-78e35f728335?q=80&w=600&auto=format&fit=crop"
+                        class="w-full h-full object-cover" alt="Memory 1">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4">
+                        <p class="text-white text-sm font-medium">Nụ cười của nàng ✨</p>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="w-full flex-shrink-0 h-full relative">
+                    <img src="https://images.unsplash.com/photo-1512389142860-9c449e58a543?q=80&w=600&auto=format&fit=crop"
+                        class="w-full h-full object-cover" alt="Memory 2">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4">
+                        <p class="text-white text-sm font-medium">Giáng sinh đầu tiên 🎄</p>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="w-full flex-shrink-0 h-full relative">
+                    <img src="https://images.unsplash.com/photo-1544253303-3bc3a6c5277d?q=80&w=600&auto=format&fit=crop"
+                        class="w-full h-full object-cover" alt="Memory 3">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4">
+                        <p class="text-white text-sm font-medium">Mãi bên nhau nhé ❤️</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Controls -->
+            <button
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 p-2 rounded-full text-white backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                onclick="prevSlide(event)">❮</button>
+            <button
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 p-2 rounded-full text-white backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                onclick="nextSlide(event)">❯</button>
+        </div>
+
+        <h3 class="text-3xl cursive text-red-700 mb-4 drop-shadow-sm">Gửi Vân Thùy...</h3>
+
+        <div class="bg-white/40 p-5 rounded-2xl mb-4 shadow-inner text-left h-32 overflow-y-auto custom-scrollbar">
+            <p id="typingText" class="text-gray-800 leading-relaxed font-medium text-sm"></p>
+        </div>
+
+        <div class="flex justify-center gap-6 text-2xl">
+            <span class="animate-pulse delay-75">❄️</span>
+            <span class="animate-bounce delay-100">🌹</span>
+            <span class="animate-pulse delay-150">✨</span>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="fixed bottom-4 left-4 z-50">
+        <button id="musicBtn" onclick="toggleMusic()"
+            class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white flex items-center justify-center hover:bg-white/40 transition-all shadow-lg">
+            <span id="musicIcon">🔇</span>
+        </button>
+    </div>
+    <audio id="bgMusic"
+        src="./music/Last Christmas Remix , We Wish You A Merry Christmas Remix 🎅 Nhạc Giáng Sinh Remix Mới Nhất 2026 [JIdv_23EeLo].mp3"
+        loop autoplay></audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
