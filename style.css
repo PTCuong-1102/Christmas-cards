@@ -59,6 +59,10 @@ canvas#snowCanvas {
 .card {
     width: 360px;
     height: 520px;
+    max-width: 90vw;
+    /* Responsive width */
+    max-height: 85vh;
+    /* Responsive height */
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -90,6 +94,15 @@ canvas#snowCanvas {
     overflow: hidden;
     transition: z-index 0s 0.6s;
     /* Delay z-index swap */
+}
+
+@media (max-width: 480px) {
+
+    .card-front,
+    .card-back {
+        padding: 1.5rem;
+        /* Smaller padding on mobile */
+    }
 }
 
 /* Interaction Logic */
